@@ -47,7 +47,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('userarea.auth.login');
+        return view('auth.login');
     }
 
      /**
@@ -64,9 +64,7 @@ class LoginController extends Controller
         ];
 
         $validator = \Validator::make($request->all(),$rules);
-        if($validator->fails())
-        {
-            dd($validator->getMessageBag());
+        if($validator->fails()){
             return redirect()->back()->withInput($request->all)->withErrors($validator->getMessageBag());
         }
 
@@ -74,25 +72,16 @@ class LoginController extends Controller
         $password = $request->password;
         $remember = $request->remember;
 
-        if(Auth::attempt(['email'=>$email,'password'=>$password,'status'=>1,'is_verified'=>1],$remember))
-        {
-            return redirect('admin/dashboard')->with('success','Welcome to dashboard');
+        if(Auth::attempt(['email'=>$email,'password'=>$password,'status'=>"1"],$remember)){
+            return redirect('dashboard')->with('success','Welcome to dashboard');
         }
 
-        if(Auth::attempt(['email'=>$email,'password'=>$password,'status'=>0,'is_verified'=>1],$remember))
-        {
+        if(Auth::attempt(['email'=>$email,'password'=>$password,'status'=>"0"],$remember)){
             Auth::logout();
-            return redirect()->back()->with('error','Your account is deactivated');
+            return redirect()->back()->with('error','Your account is deactivated by admin');
         }
 
-        if(Auth::attempt(['email'=>$email,'password'=>$password,'status'=>1,'is_verified'=>0],$remember))
-        {
-            Auth::logout();
-            return redirect()->back()->with('error','Your account is not verified');
-        }
-
-        else
-        {
+        else{
             return redirect()->back()->with('error','Wrong Credentials')->withInput($request->all());
         }
     }
@@ -100,6 +89,6 @@ class LoginController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('userarea.login');
     }
 }

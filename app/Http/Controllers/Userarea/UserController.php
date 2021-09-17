@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Userarea;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\UserRequest;
+use App\Models\{
+    User
+};
 
-class UserProfileController extends Controller
+class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,18 +18,8 @@ class UserProfileController extends Controller
      */
     public function index()
     {
-        return view('userarea.dashboard');
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function profile()
-    {
-        $data['user'] = (auth()->check()) ? auth()->user() : "--";
-        return view('userarea.profile',$data);
+        $data['models'] = User::orderBy('id','desc')->get();
+        return view('users.index',$data);
     }
 
     /**
@@ -35,7 +29,7 @@ class UserProfileController extends Controller
      */
     public function create()
     {
-        //
+        return view('users.add_edit');
     }
 
     /**
@@ -44,9 +38,12 @@ class UserProfileController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        //
+        $model = new User;
+        $model->fill($request->all());
+        $model->save();
+        return redirect()->route('userarea.users.index')->with('success','User created successfully');
     }
 
     /**
@@ -68,7 +65,8 @@ class UserProfileController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data['model'] = User::find($id);
+        return view('users.add_edit',$data);
     }
 
     /**
@@ -78,9 +76,13 @@ class UserProfileController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id=null)
+    public function update(UserRequest $request, $id=null)
     {
-        dd($request->all());
+        $data = $request->all();
+        $user = User::find($id);
+        $data['password'] = $request->has('password') ? \Hash::make($request->password) : $user->password;
+        $user->update($data);
+        return redirect()->route('userarea.users.index')->with('success','User updated successfully');
     }
 
     /**
@@ -91,6 +93,7 @@ class UserProfileController extends Controller
      */
     public function destroy($id)
     {
-        //
+        User::find($id)->delete();
+        return redirect()->route('userarea.users.index')->with('success','User deleted successfully');
     }
 }

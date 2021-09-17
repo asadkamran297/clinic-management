@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    @include('userarea.includes.head')
+    @include('includes.head')
 </head>
 
 <body class="fix-header fix-sidebar card-no-border">
@@ -23,7 +23,7 @@
         <!-- Topbar header - style you can find in pages.scss -->
         <!-- ============================================================== -->
         <header class="topbar">
-            @include('userarea.includes.header')
+            @include('includes.header')
         </header>
         <!-- ============================================================== -->
         <!-- End Topbar header -->
@@ -33,7 +33,7 @@
         <!-- ============================================================== -->
         <aside class="left-sidebar">
             <!-- Sidebar scroll-->
-            @include('userarea.includes.nav')
+            @include('includes.nav')
             <!-- End Sidebar scroll-->
         </aside>
         <!-- ============================================================== -->
@@ -53,7 +53,7 @@
             <!-- ============================================================== -->
             <!-- footer -->
             <!-- ============================================================== -->
-            <footer class="footer"> @include('userarea.includes.footer')</footer>
+            <footer class="footer"> @include('includes.footer')</footer>
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -68,7 +68,8 @@
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    @include('userarea.includes.scripts')
+    @include('includes.scripts')
+    @stack('scripts')
 </body>
 
 </html>

@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return route('userarea.login');
+    return redirect()->route('userarea.login');
     return view('welcome');
 });
 
@@ -31,27 +31,13 @@ Route::group(['namespace'=>'Userarea','as'=>'userarea.'],function(){
         Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('password.reset');
         Route::post('password/reset', 'ResetPasswordController@reset');
     });
+    Route::group(['middleware'=>'auth'],function(){
+        Route::get('logout', 'Auth\LoginController@logout')->name('logout');
+        Route::get('dashboard',function(){
+            return redirect()->route('userarea.appointments.index');
+        })->name('dashboard');
 
-    Route::get('dashboard','DashboardController@index')->name('dashboard');
-
-    Route::get('profile','UserProfileController@profile')->name('profile');
-    Route::post('update-profile','UserProfileController@update')->name('update_profile');
-
-    Route::group(['prefix'=>'quotes','as'=>'quotes.'],function(){
-        Route::get('/','QuoteController@index')->name('index');
+        Route::resource('users','UserController');
+        Route::resource('appointments','AppointmentController');
     });
-
-    Route::group(['prefix'=>'writers','as'=>'writers.'],function(){
-        Route::get('/','WriterController@index')->name('index');
-    });
-
-    Route::group(['prefix'=>'orders','as'=>'orders.'],function(){
-        Route::get('/','OrderController@index')->name('index');
-        Route::get('/awaiting-payment','OrderController@awaitingPayment')->name('payment_awaiting');
-        Route::get('/pending','OrderController@pending')->name('pending');
-        Route::get('/completed','OrderController@completed')->name('completed');
-        Route::get('{order}/detail','OrderController@details')->name('details');
-    });
-
-
 });
