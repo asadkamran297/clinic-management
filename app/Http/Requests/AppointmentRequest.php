@@ -33,7 +33,7 @@ class AppointmentRequest extends FormRequest
             'doctor_name' => 'required',
             'amount' => 'required',
             'injury' => 'required',
-            'notes' => 'required',
+            // 'notes' => 'required',
         ];
 
         return $rules;

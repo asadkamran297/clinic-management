@@ -16,7 +16,7 @@
         margin: 0mm;  /* this affects the margin in the printer settings */
     }
     * {
-        font-size: 12px;
+        font-size: 20px;
         font-family: 'Times New Roman';
     }
 
@@ -30,14 +30,14 @@
 
     td.description,
     th.description {
-        width: 100px;
-        max-width: 100px;
+        width: 500px;
+        max-width: 500px;
     }
 
     td.quantity,
     th.quantity {
-        width: 50px;
-        max-width: 50px;
+        width: 500px;
+        max-width: 500px;
         word-break: break-all;
     }
 
@@ -54,8 +54,8 @@
     }
 
     .ticket {
-        width: 155px;
-        max-width: 155px;
+        width: 500px;
+        max-width: 500px;
     }
 
     img {
@@ -71,13 +71,19 @@
     }
 </style>
 <div class="ticket">
-    <p class="centered"><u><b> Bhutta Dua Khana </b></u></p>
+    <p style="font-size: 20px; text-align: center; !important"><u><b> Bhutta Dua Khana</b></u></p>
+        <p>New Noora Koot Road Ghakkhar Near <br>Girls College</p>
+        <p>Mobile Number 03006474177</p>
     <table>
         <thead>
         </thead>
         <tbody>
             <tr>
-                <td class="quantity">Token #:</td>
+                <td class="quantity">Date Time :</td>
+                <td class="description">{{ $model->visit_datetime ?? "" }}</td>
+            </tr>
+            <tr>
+                <td class="quantity">Token #</td>
                 <td class="description">{{ $model->token_no ?? "" }}</td>
             </tr>
             <tr>

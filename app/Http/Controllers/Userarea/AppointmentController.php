@@ -35,7 +35,7 @@ class AppointmentController extends Controller
     public function create()
     {
         $token = Appointment::orderBy('token_no','desc')->first();
-        $data['token_no'] = $token->token_no;
+        $data['token_no'] = isset($token) && $token->token_no ? $token->token_no : '1';
         return view('appointments.add_edit',$data);
     }
 
@@ -53,7 +53,7 @@ class AppointmentController extends Controller
         }
         if(isset($request->token_no) && $request->token_no=='1'){
             $ch = Appointment::orderBy('token_no','desc')->first();
-            $data['token_no'] = $ch->token_no+1 ?? '1';
+            $data['token_no'] = isset($ch) && $ch->token_no ?  $ch->token_no+1 : '1';
         }
         $data['visit_datetime'] = date('d-m-y h:i:s');;
         $model = new Appointment;
